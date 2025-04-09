@@ -30,6 +30,9 @@ jobs:
         run: |
           npm run dev &
           npx wait-on http://localhost:4097
+          
+      - name: Esegui test Cypress (solo login)
+        run: npx cypress run --spec "cypress/e2e/skylarknet/login.cy.js"        
 
       - name: Esegui test Cypress
         run: npx cypress run
