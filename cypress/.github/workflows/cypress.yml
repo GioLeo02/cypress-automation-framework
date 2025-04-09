@@ -1,0 +1,35 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches: [cypress_testing] #
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo principale (skylarknet)
+        uses: actions/checkout@v3
+
+      - name: Checkout Cypress test repo (pubblica)
+        uses: actions/checkout@v3
+        with:
+          repository: GioLeo02/cypress-automation-framework
+          path: cypress-tests
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Installa dipendenze progetto
+        run: npm install
+
+      - name: Avvia il progetto Next.js
+        run: |
+          npm run dev &
+          npx wait-on http://localhost:4097
+
+      - name: Esegui test Cypress
+        run: npx cypress run
