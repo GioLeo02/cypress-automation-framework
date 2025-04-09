@@ -2,7 +2,7 @@ name: Cypress Tests
 
 on:
   push:
-    branches: [cypress_testing] #
+    branches: [cypress_testing]
 
 jobs:
   cypress-run:
@@ -25,14 +25,17 @@ jobs:
 
       - name: Installa dipendenze progetto
         run: npm install
-        
-      - name: Esegui test Cypress (solo login)
-        run: npx cypress run --spec "cypress/e2e/skylarknet/login.cy.js"        
-      
+
+      - name: Copia SOLO i test login
+        run: |
+          mkdir -p cypress/e2e/skylarknet
+          cp cypress-tests/cypress/e2e/skylarknet/login.cy.js cypress/e2e/skylarknet/
+          cp cypress-tests/cypress.config.js ./cypress.config.js
+
       - name: Avvia il progetto Next.js
         run: |
           npm run dev &
           npx wait-on http://localhost:4097
 
-      - name: Esegui test Cypress
-        run: npx cypress run
+      - name: Esegui test Cypress (solo login)
+        run: npx cypress run --spec "cypress/e2e/skylarknet/login.cy.js"
